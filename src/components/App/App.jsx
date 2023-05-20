@@ -8,16 +8,18 @@ import {
   Text,
   Todo,
 } from 'components';
-import { useDispatch, useSelector } from 'react-redux';
-import { selectTodos } from 'redux/todo/seslectors';
+import { useDispatch } from 'react-redux';
+import { useGetTodosQuery } from 'redux/Api/Api';
+// import { selectTodos } from 'redux/todo/seslectors';
 import { deleteTodo } from 'redux/todo/slice';
 
 export const App = () => {
   // const [todos, setTodos] = useState(
   //   JSON.parse(localStorage.getItem('todos')) ?? []
   // );
+  const { data: todos } = useGetTodosQuery();
 
-  const todos = useSelector(selectTodos);
+  // const todos = useSelector(selectTodos);
   const dispatch = useDispatch();
 
   return (

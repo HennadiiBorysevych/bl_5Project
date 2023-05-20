@@ -2,14 +2,17 @@ import { RiDeleteBinLine } from 'react-icons/ri';
 import { Text } from 'components';
 import { DeleteButton, TodoWrapper } from './Todo.styled';
 import { useEffect, useRef, useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { editTodo } from 'redux/todo/slice';
+// import { useDispatch } from 'react-redux';
+// import { editTodo } from 'redux/todo/slice';
+import { useDeleteTodoMutation, useUpdateTodoMutation } from 'redux/Api/Api';
 
-export const Todo = ({ text, counter, onClick, id }) => {
+export const Todo = ({ text, counter, id }) => {
+  const [deleteTodo] = useDeleteTodoMutation();
+  const [updateTodo] = useUpdateTodoMutation();
   const [isEditing, setIsEditing] = useState(false);
   const inputRef = useRef(null);
   const [newValue, setNewValue] = useState(text);
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   useEffect(() => {
     inputRef?.current?.focus();
   }, [inputRef]);
@@ -28,7 +31,8 @@ export const Todo = ({ text, counter, onClick, id }) => {
             value={newValue}
             onBlur={() => {
               setIsEditing(false);
-              dispatch(editTodo({ id, query: newValue }));
+              updateTodo({ id, query: newValue });
+              // dispatch(editTodo({ id, query: newValue }));
             }}
             onChange={e => setNewValue(e.target.value)}
             autoFocus
@@ -36,7 +40,7 @@ export const Todo = ({ text, counter, onClick, id }) => {
         ) : (
           <Text onClick={() => setIsEditing(true)}>{text}</Text>
         )}
-        <DeleteButton type="button" onClick={() => onClick(id)}>
+        <DeleteButton type="button" onClick={() => deleteTodo({ id })}>
           <RiDeleteBinLine size={24} />
         </DeleteButton>
       </TodoWrapper>
